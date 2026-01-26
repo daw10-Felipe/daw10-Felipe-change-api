@@ -38,7 +38,9 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password), // Importante: Encriptar password
+            // NOTA: Como en User.php tienes 'password' => 'hashed',
+            // no hace falta usar Hash::make() aquí, Laravel lo hace solo.
+            'password' => $request->password,
         ]);
 
         $token = Auth::login($user);
@@ -46,8 +48,8 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
-    // Usuario autenticado
-    public function me()
+
+    public function userProfile()
     {
         return response()->json(Auth::user());
     }
