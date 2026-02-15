@@ -1,0 +1,33 @@
+<div class="home-container">
+    <header class="hero">
+        <h1>La plataforma mundial para el cambio</h1>
+        <div class="search-box">
+            <input type="text" placeholder="Buscar peticiones..." [ngModel]="searchTerm()"
+                (ngModelChange)="searchTerm.set($event)" />
+        </div>
+    </header>
+
+    <section class="petitions-list">
+        @for (petition of filteredPetitions(); track petition.id) {
+        <div class="petition-card">
+            @if (petition.image) {
+            <div class="card-image">
+                <img [src]="'http://localhost:8000/storage/' + petition.image" alt="{{ petition.title }}" />
+            </div>
+            }
+            <h2>
+                <a [routerLink]="['/petitions', petition.id]">{{ petition.title }}</a>
+            </h2>
+            <p class="description">{{ petition.description | slice:0:150 }}{{ petition.description.length > 150 ? '...'
+                : '' }}</p>
+            <div class="meta">
+                <span>Por {{ petition.user?.name || 'Desconocido' }}</span>
+                <span class="status-badge {{ petition.status }}">{{ petition.status | uppercase }}</span>
+                <span class="signers-count">✍️ {{ petition.signers }} firmantes</span>
+            </div>
+        </div>
+        } @empty {
+        <p class="no-results">No se encontraron peticiones que coincidan con tu búsqueda.</p>
+        }
+    </section>
+</div>

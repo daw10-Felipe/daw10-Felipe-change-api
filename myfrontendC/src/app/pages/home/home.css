@@ -1,0 +1,97 @@
+.home-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+.search-box input {
+    width: 100%;
+    max-width: 500px;
+    padding: 1rem;
+    font-size: 1.2rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.petitions-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.petition-card {
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    padding: 0;
+    
+    overflow: hidden;
+    
+    transition: transform 0.2s, box-shadow 0.2s;
+    background: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-image {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.petition-card h2 {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    padding: 0 1.5rem;
+    
+}
+
+.petition-card h2 a {
+    text-decoration: none;
+    color: #333;
+}
+
+.petition-card h2 a:hover {
+    color: #ec2c22;
+}
+
+.description {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    padding: 0 1.5rem;
+    
+    flex-grow: 1;
+}
+
+.meta {
+    font-size: 0.9rem;
+    color: #999;
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    
+    margin-top: auto;
+}
+
+.no-results {
+    text-align: center;
+    grid-column: 1 / -1;
+    font-size: 1.2rem;
+    color: #666;
+}

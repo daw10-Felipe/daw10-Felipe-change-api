@@ -1,0 +1,22 @@
+<div class="auth-container">
+  <h2>Registrarse</h2>
+  <form (ngSubmit)="register()" #form="ngForm">
+    <div>
+      <label>Nombre</label>
+      <input type="text" name="name" [(ngModel)]="formData.name" required />
+    </div>
+    <div>
+      <label>Correo electrónico</label>
+      <input type="email" name="email" [(ngModel)]="formData.email" required />
+    </div>
+    <div>
+      <label>Contraseña</label>
+      <input type="password" name="password" [(ngModel)]="formData.password" required minlength="6" />
+    </div>
+    <button type="submit" [disabled]="form.invalid">Registrarse</button>
+    <p>
+      ¿Ya tienes cuenta?
+      <a routerLink="/login">Entrar</a>
+    </p>
+  </form>
+</div>

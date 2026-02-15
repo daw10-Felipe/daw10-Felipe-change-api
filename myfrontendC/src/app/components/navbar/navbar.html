@@ -1,0 +1,23 @@
+<nav class="navbar">
+    <div class="logo">
+        <a routerLink="/" class="logo-link">Change</a>
+    </div>
+    <ul class="nav-links">
+        <li><a routerLink="/petitions" routerLinkActive="active">Ver Peticiones</a></li>
+        <li><a (click)="navigateToCreate()" class="cursor-pointer">Iniciar una petición</a></li>
+    </ul>
+    <div class="auth-buttons">
+        @if (user) {
+        <div class="dropdown">
+            <button class="dropbtn">Hola, {{ user.name }} ▼</button>
+            <div class="dropdown-content">
+                <a routerLink="/petitions" [queryParams]="{user: user.id}">Mis peticiones</a>
+                <a (click)="logout()">Cerrar Sesión</a>
+            </div>
+        </div>
+        } @else {
+        <a routerLink="/login" routerLinkActive="active" class="btn-login">Entrar</a>
+        <a routerLink="/register" routerLinkActive="active" class="btn-register">Registrarse</a>
+        }
+    </div>
+</nav>

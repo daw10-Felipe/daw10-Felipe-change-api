@@ -20,7 +20,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed', // 👈 Laravel 12 hashea automáticamente
+            'password' => 'hashed', 
         ];
     }
     public function getJWTIdentifier()
@@ -30,5 +30,10 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims(): array
     {
         return [];
+    }
+
+    public function petitions()
+    {
+        return $this->hasMany(Petition::class);
     }
 }

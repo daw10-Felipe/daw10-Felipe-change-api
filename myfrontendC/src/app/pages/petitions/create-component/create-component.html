@@ -1,0 +1,21 @@
+<div class="form-container">
+    <h2>Iniciar una Nueva Petición</h2>
+    <form [formGroup]="petitionForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="title">Título de la Petición</label>
+            <input id="title" type="text" formControlName="title" placeholder="¿Qué quieres cambiar?" />
+        </div>
+        <div class="form-group">
+            <label for="description">Descripción</label>
+            <textarea id="description" formControlName="description" rows="5"
+                placeholder="Explica el problema y tu solución..."></textarea>
+        </div>
+        <div class="form-group">
+            <label for="image">Imagen (Opcional)</label>
+            <input type="file" id="image" (change)="onFileSelected($event)" accept="image/*" />
+        </div>
+        <button type="submit" [disabled]="petitionForm.invalid">
+            Crear Petición
+        </button>
+    </form>
+</div>

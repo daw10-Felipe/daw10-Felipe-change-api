@@ -1,0 +1,87 @@
+.detail-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.meta {
+    display: flex;
+    gap: 1.5rem;
+    color: #666;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+}
+
+.content {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #444;
+    white-space: pre-wrap;
+    margin-bottom: 3rem;
+}
+
+.image-container {
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.petition-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    border-top: 1px solid #eee;
+    padding-top: 1.5rem;
+}
+
+.btn-edit,
+.btn-delete {
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    font-size: 1rem;
+}
+
+.btn-edit {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.btn-edit:hover {
+    background-color: #e0e0e0;
+}
+
+.btn-delete {
+    background-color: #ffebee;
+    color: #d32f2f;
+}
+
+.btn-delete:hover {
+    background-color: #ffcdd2;
+}
+
+.loading {
+    text-align: center;
+    margin-top: 3rem;
+    font-size: 1.2rem;
+    color: #666;
+}

@@ -1,0 +1,30 @@
+<div class="form-container">
+    <h2>Editar Petición</h2>
+    <form [formGroup]="petitionForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="title">Título de la Petición</label>
+            <input id="title" type="text" formControlName="title" placeholder="¿Qué quieres cambiar?" />
+        </div>
+        <div class="form-group">
+            <label for="description">Descripción</label>
+            <textarea id="description" formControlName="description" rows="5"
+                placeholder="Explica el problema y tu solución..."></textarea>
+        </div>
+
+        @if (currentImage()) {
+        <div class="current-image">
+            <p>Imagen actual:</p>
+            <img [src]="'http://localhost:8000/storage/' + currentImage()" alt="Current petition image"
+                style="max-width: 200px; border-radius: 4px;">
+        </div>
+        }
+
+        <div class="form-group">
+            <label for="image">Cambiar Imagen (Opcional)</label>
+            <input type="file" id="image" (change)="onFileSelected($event)" accept="image/*" />
+        </div>
+        <button type="submit" [disabled]="petitionForm.invalid">
+            Actualizar Petición
+        </button>
+    </form>
+</div>

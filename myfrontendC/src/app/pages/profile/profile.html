@@ -1,0 +1,7 @@
+@if (user$ | async; as user) {
+<div>
+  <h2>{{ user.name }}</h2>
+  <p>{{ user.email }}</p>
+  <button (click)="logout()">Cerrar Sesión</button>
+</div>
+}

@@ -1,0 +1,29 @@
+@if (petition(); as p) {
+<div class="detail-container">
+    <h1>{{ p.title }}</h1>
+    <div class="meta">
+        <span class="author">Iniciada por <strong>{{ p.user?.name || 'Desconocido' }}</strong></span>
+        <span class="date">{{ p.created_at | date:'mediumDate' }}</span>
+        <span class="status-pill {{ p.status }}">Estado: {{ p.status | uppercase }}</span>
+        <span class="signers-pill">✍️ {{ p.signers }} personas han firmado</span>
+    </div>
+
+    <div class="content">
+        @if (p.image) {
+        <div class="image-container">
+            <img [src]="'http://localhost:8000/storage/' + p.image" alt="{{ p.title }}" class="petition-image" />
+        </div>
+        }
+        <p>{{ p.description }}</p>
+    </div>
+
+    @if (isOwner()) {
+    <div class="actions">
+        <a [routerLink]="['/petitions', p.id, 'edit']" class="btn-edit">Editar Petición</a>
+        <button (click)="deletePetition()" class="btn-delete">Eliminar Petición</button>
+    </div>
+    }
+</div>
+} @else {
+<p class="loading">Cargando petición...</p>
+}

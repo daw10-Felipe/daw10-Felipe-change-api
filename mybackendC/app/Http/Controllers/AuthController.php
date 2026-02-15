@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // Login y generacion del token JWT
+
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -17,7 +17,7 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        if (! $token = Auth::attempt($credentials)) {
+        if (!$token = Auth::attempt($credentials)) {
             return response()->json([
                 'message' => 'Credenciales incorrectas'
             ], 401);
@@ -26,20 +26,23 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
-    // Registro de usuario
+
     public function register(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
+        ], [
+            'email.unique' => 'El correo ya tiene una cuenta creada',
+            'email.required' => 'El correo es obligatorio',
+            'email.email' => 'El formato del correo no es válido',
+            'password.min' => 'La contraseña debe tener al menos 6 caracteres'
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            // NOTA: Como en User.php tienes 'password' => 'hashed',
-            // no hace falta usar Hash::make() aquí, Laravel lo hace solo.
             'password' => $request->password,
         ]);
 
@@ -49,12 +52,12 @@ class AuthController extends Controller
     }
 
 
-    public function userProfile()
+    public function me()
     {
         return response()->json(Auth::user());
     }
 
-    // Logout (invalida el token)
+
     public function logout()
     {
         Auth::logout();
@@ -64,13 +67,13 @@ class AuthController extends Controller
         ]);
     }
 
-    // Refrescar token
+
     public function refresh()
     {
         return $this->respondWithToken(Auth::refresh());
     }
 
-    // Respuesta estandar con token
+
     protected function respondWithToken($token)
     {
         return response()->json([
