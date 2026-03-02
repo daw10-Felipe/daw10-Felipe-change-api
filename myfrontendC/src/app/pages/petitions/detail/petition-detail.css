@@ -30,10 +30,17 @@ h1 {
     margin-bottom: 3rem;
 }
 
-.image-container {
+.images-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
     margin-bottom: 2rem;
+}
+
+.gallery-item {
     border-radius: 8px;
     overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .petition-image {

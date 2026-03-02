@@ -32,6 +32,7 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    // Relación: Un usuario puede haber creado muchas peticiones.
     public function petitions()
     {
         return $this->hasMany(Petition::class);

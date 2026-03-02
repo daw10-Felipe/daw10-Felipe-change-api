@@ -10,10 +10,23 @@
             <textarea id="description" formControlName="description" rows="5"
                 placeholder="Explica el problema y tu solución..."></textarea>
         </div>
+
         <div class="form-group">
-            <label for="image">Imagen (Opcional)</label>
-            <input type="file" id="image" (change)="onFileSelected($event)" accept="image/*" />
+            <label for="images">Imágenes (Opcional, puedes seleccionar varias)</label>
+            <input type="file" id="images" (change)="onFileSelected($event)" accept="image/*" multiple />
         </div>
+
+        @if (previewUrls().length > 0) {
+        <div class="image-previews">
+            @for (url of previewUrls(); track url; let i = $index) {
+            <div class="preview-item">
+                <img [src]="url" alt="Vista previa" />
+                <button type="button" class="remove-btn" (click)="removeFile(i)">✕</button>
+            </div>
+            }
+        </div>
+        }
+
         <button type="submit" [disabled]="petitionForm.invalid">
             Crear Petición
         </button>

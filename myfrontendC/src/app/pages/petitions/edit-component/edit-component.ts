@@ -1,23 +1,25 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PetitionService } from '../../../services/petition.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from '../../../services/toast.service';
 import { AuthService } from '../../../auth/auth.service';
-import { Petition } from '../../../models/petition.model';
+import { PetitionImage } from '../../../models/petition.model';
 
 @Component({
     selector: 'app-edit-component',
-    standalone: true,
     imports: [ReactiveFormsModule],
     templateUrl: './edit-component.html',
-    styleUrls: ['./edit-component.css']
+    styleUrls: ['./edit-component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditComponent implements OnInit {
     petitionForm: FormGroup;
     petitionId: number | null = null;
-    currentImage = signal<string | null>(null);
-    selectedFile = signal<File | null>(null);
+    existingImages = signal<PetitionImage[]>([]);
+    imagesToDelete = signal<number[]>([]);
+    selectedFiles = signal<File[]>([]);
+    previewUrls = signal<string[]>([]);
 
     constructor(
         private fb: FormBuilder,
@@ -30,7 +32,6 @@ export class EditComponent implements OnInit {
         this.petitionForm = this.fb.group({
             title: ['', Validators.required],
             description: ['', Validators.required],
-            image: [null]
         });
     }
 
@@ -43,6 +44,7 @@ export class EditComponent implements OnInit {
         });
     }
 
+    // Carga los datos para editar. Si no eres el dueño te echa fuera.
     loadPetition(id: number) {
         this.petitionService.getPetition(id).subscribe(petition => {
             const currentUser = this.authService.getCurrentUser();
@@ -57,40 +59,70 @@ export class EditComponent implements OnInit {
                 description: petition.description
             });
 
-            if (petition.image) {
-                this.currentImage.set(petition.image);
-            }
+            this.existingImages.set(petition.images ?? []);
         });
     }
 
-    onFileSelected(event: Event) {
-        const input = event.target as HTMLInputElement;
-        if (input.files && input.files.length > 0) {
-            this.selectedFile.set(input.files[0]);
+    // Marca o desmarca una imagen existente para borrar.
+    toggleDeleteImage(id: number) {
+        const current = this.imagesToDelete();
+        if (current.includes(id)) {
+            this.imagesToDelete.set(current.filter(x => x !== id));
+        } else {
+            this.imagesToDelete.set([...current, id]);
         }
     }
 
+    isMarkedForDelete(id: number): boolean {
+        return this.imagesToDelete().includes(id);
+    }
+
+    // Añade nuevas imágenes a subir con vista previa.
+    onFileSelected(event: Event) {
+        const input = event.target as HTMLInputElement;
+        if (input.files && input.files.length > 0) {
+            const newFiles = Array.from(input.files);
+            const addedUrls = newFiles.map(f => URL.createObjectURL(f));
+            this.selectedFiles.set([...this.selectedFiles(), ...newFiles]);
+            this.previewUrls.set([...this.previewUrls(), ...addedUrls]);
+        }
+    }
+
+    // Elimina una imagen nueva (aún no guardada) de la selección.
+    removeNewFile(index: number) {
+        const files = this.selectedFiles().slice();
+        files.splice(index, 1);
+        this.selectedFiles.set(files);
+
+        const urls = this.previewUrls().slice();
+        URL.revokeObjectURL(urls[index]);
+        urls.splice(index, 1);
+        this.previewUrls.set(urls);
+    }
+
+    // Manda los cambios. Usa _method: PUT para que Laravel acepte el FormData.
     onSubmit() {
         if (this.petitionForm.invalid || !this.petitionId) return;
 
         const formData = new FormData();
         formData.append('title', this.petitionForm.get('title')?.value);
         formData.append('description', this.petitionForm.get('description')?.value);
-
-        // Laravel needs _method: PUT to handle FormData in PUT requests
         formData.append('_method', 'PUT');
 
-        const file = this.selectedFile();
-        if (file) {
-            formData.append('image', file);
-        }
+        this.imagesToDelete().forEach(id => {
+            formData.append('delete_images[]', String(id));
+        });
+
+        this.selectedFiles().forEach(file => {
+            formData.append('images[]', file);
+        });
 
         this.petitionService.updatePetition(this.petitionId, formData).subscribe({
             next: () => {
                 this.toastService.show('Petición actualizada con éxito', 'success');
                 this.router.navigate(['/petitions', this.petitionId]);
             },
-            error: (err) => {
+            error: () => {
                 this.toastService.show('Error al actualizar la petición', 'error');
             }
         });

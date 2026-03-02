@@ -11,18 +11,38 @@
                 placeholder="Explica el problema y tu solución..."></textarea>
         </div>
 
-        @if (currentImage()) {
-        <div class="current-image">
-            <p>Imagen actual:</p>
-            <img [src]="'http://localhost:8000/storage/' + currentImage()" alt="Current petition image"
-                style="max-width: 200px; border-radius: 4px;">
+        @if (existingImages().length > 0) {
+        <div class="form-group">
+            <p>Imágenes actuales (haz clic en ✕ para eliminar al guardar):</p>
+            <div class="image-previews">
+                @for (img of existingImages(); track img.id) {
+                <div class="preview-item" [class.marked-delete]="isMarkedForDelete(img.id)">
+                    <img [src]="'http://localhost:8000/storage/' + img.path" alt="Imagen de la petición" />
+                    <button type="button" class="remove-btn" (click)="toggleDeleteImage(img.id)">
+                        {{ isMarkedForDelete(img.id) ? '↩' : '✕' }}
+                    </button>
+                </div>
+                }
+            </div>
         </div>
         }
 
         <div class="form-group">
-            <label for="image">Cambiar Imagen (Opcional)</label>
-            <input type="file" id="image" (change)="onFileSelected($event)" accept="image/*" />
+            <label for="images">Añadir más imágenes (Opcional)</label>
+            <input type="file" id="images" (change)="onFileSelected($event)" accept="image/*" multiple />
         </div>
+
+        @if (previewUrls().length > 0) {
+        <div class="image-previews">
+            @for (url of previewUrls(); track url; let i = $index) {
+            <div class="preview-item">
+                <img [src]="url" alt="Nueva imagen" />
+                <button type="button" class="remove-btn" (click)="removeNewFile(i)">✕</button>
+            </div>
+            }
+        </div>
+        }
+
         <button type="submit" [disabled]="petitionForm.invalid">
             Actualizar Petición
         </button>

@@ -21,6 +21,7 @@ export class RegisterComponent {
     private router: Router,
     private toastService: ToastService
   ) { }
+  // Registra al usuario. Si sale bien te manda al login, si no muestra el error que devuelva el backend.
   register() {
     // Llamada al servicio de autenticación
     this.auth.register(this.formData).subscribe({
@@ -33,7 +34,7 @@ export class RegisterComponent {
         if (err.error && err.error.message) {
           msg = err.error.message;
         }
-        // If there are validation errors, they might be in err.error.errors
+        // Si hay errores de validación específicos, cogemos el primero
         if (err.error && err.error.errors) {
           const firstErrorKey = Object.keys(err.error.errors)[0];
           if (firstErrorKey) {
