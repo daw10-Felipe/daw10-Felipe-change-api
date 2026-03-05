@@ -7,7 +7,6 @@ import { HomeComponent } from './pages/home/home';
 import { PetitionDetailComponent } from './pages/petitions/detail/petition-detail';
 import { CreateComponent } from './pages/petitions/create-component/create-component';
 import { EditComponent } from './pages/petitions/edit-component/edit-component';
-// Definición de rutas. Protegemos con authGuard las que necesitan login (perfil, crear/editar petición).
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
@@ -15,7 +14,7 @@ export const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
-    canActivate: [authGuard], //portero
+    canActivate: [authGuard],
   },
 
   { path: 'petitions', component: HomeComponent },

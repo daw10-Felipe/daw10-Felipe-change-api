@@ -44,7 +44,6 @@ export class EditComponent implements OnInit {
         });
     }
 
-    // Carga los datos para editar. Si no eres el dueño te echa fuera.
     loadPetition(id: number) {
         this.petitionService.getPetition(id).subscribe(petition => {
             const currentUser = this.authService.getCurrentUser();
@@ -63,7 +62,6 @@ export class EditComponent implements OnInit {
         });
     }
 
-    // Marca o desmarca una imagen existente para borrar.
     toggleDeleteImage(id: number) {
         const current = this.imagesToDelete();
         if (current.includes(id)) {
@@ -77,7 +75,6 @@ export class EditComponent implements OnInit {
         return this.imagesToDelete().includes(id);
     }
 
-    // Añade nuevas imágenes a subir con vista previa.
     onFileSelected(event: Event) {
         const input = event.target as HTMLInputElement;
         if (input.files && input.files.length > 0) {
@@ -88,7 +85,6 @@ export class EditComponent implements OnInit {
         }
     }
 
-    // Elimina una imagen nueva (aún no guardada) de la selección.
     removeNewFile(index: number) {
         const files = this.selectedFiles().slice();
         files.splice(index, 1);
@@ -100,7 +96,6 @@ export class EditComponent implements OnInit {
         this.previewUrls.set(urls);
     }
 
-    // Manda los cambios. Usa _method: PUT para que Laravel acepte el FormData.
     onSubmit() {
         if (this.petitionForm.invalid || !this.petitionId) return;
 

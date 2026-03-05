@@ -17,7 +17,6 @@ export class HomeComponent implements OnInit {
     petitions = signal<Petition[]>([]);
     searchTerm = signal('');
 
-    // Calcula las peticiones que se muestran según lo que escribas en el buscador.
     filteredPetitions = computed(() => {
         const term = this.searchTerm().toLowerCase();
         return this.petitions().filter(p =>
@@ -31,7 +30,6 @@ export class HomeComponent implements OnInit {
         private route: ActivatedRoute
     ) { }
 
-    // Al cargar, pide las peticiones. Si vienes con filtro de usuario (?user=X), filtra solo esas.
     ngOnInit() {
         this.route.queryParams.subscribe(params => {
             this.petitionService.getPetitions().subscribe(petitions => {

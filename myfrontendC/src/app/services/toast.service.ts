@@ -13,7 +13,6 @@ export class ToastService {
     toasts = signal<Toast[]>([]);
     private nextId = 1;
 
-    // Muestra una notificación flotante y la quita a los 3 segundos.
     show(message: string, type: 'success' | 'error' | 'info' = 'info') {
         const id = this.nextId++;
         const toast: Toast = { id, message, type };
@@ -24,7 +23,6 @@ export class ToastService {
         }, 3000);
     }
 
-    // Elimina una notificación de la lista.
     remove(id: number) {
         this.toasts.update(current => current.filter(t => t.id !== id));
     }

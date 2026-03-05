@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
 
-    // Método para iniciar sesión. Valida el email y password, intenta loguear y si falla devuelve error 401. Si todo va bien, devuelve el token.
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -28,7 +27,6 @@ class AuthController extends Controller
     }
 
 
-    // Registro de nuevos usuarios. Valida los datos, crea el usuario en la BD y lo loguea automáticamente devolviendo el token.
     public function register(Request $request)
     {
         $request->validate([
@@ -54,14 +52,12 @@ class AuthController extends Controller
     }
 
 
-    // Obtiene los datos del usuario autenticado actualmente usando el token.
     public function me()
     {
         return response()->json(Auth::user());
     }
 
 
-    // Cierra la sesión del usuario invalidando el token actual.
     public function logout()
     {
         Auth::logout();
@@ -72,14 +68,12 @@ class AuthController extends Controller
     }
 
 
-    // Refresca el token de autenticación para que el usuario siga logueado sin tener que meter sus datos otra vez.
     public function refresh()
     {
         return $this->respondWithToken(Auth::refresh());
     }
 
 
-    // Función auxiliar para formatear la respuesta JSON con el token generado.
     protected function respondWithToken($token)
     {
         return response()->json([

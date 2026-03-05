@@ -28,7 +28,6 @@ export class CreateComponent {
         });
     }
 
-    // Guarda las imágenes seleccionadas y genera miniaturas de vista previa.
     onFileSelected(event: Event) {
         const input = event.target as HTMLInputElement;
         if (input.files && input.files.length > 0) {
@@ -42,7 +41,6 @@ export class CreateComponent {
         }
     }
 
-    // Elimina una imagen de la selección.
     removeFile(index: number) {
         const files = this.selectedFiles().slice();
         files.splice(index, 1);
@@ -54,7 +52,6 @@ export class CreateComponent {
         this.previewUrls.set(urls);
     }
 
-    // Crea el FormData con título, descripción e imágenes y lo manda al servicio.
     onSubmit() {
         if (this.petitionForm.invalid) return;
 

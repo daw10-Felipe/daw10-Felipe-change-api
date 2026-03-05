@@ -33,7 +33,7 @@ export class AuthService {
     return this.http
       .post(`${this.api}/logout`, {})
       .pipe(finalize(() => {
-        this.clearTokens(); // Limpiamos el LocalStorage y el estado del usuario
+        this.clearTokens();
         this.router.navigate(['/login']);
       }));
   }
@@ -52,7 +52,6 @@ export class AuthService {
   }
 
   private storeTokens(res: LoginResponse) {
-    // Guardamos el token JWT en el navegador
     localStorage.setItem('access_token', res.access_token);
   }
 

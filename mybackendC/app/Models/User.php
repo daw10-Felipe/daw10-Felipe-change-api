@@ -20,7 +20,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed', 
+            'password' => 'hashed',
         ];
     }
     public function getJWTIdentifier()
@@ -32,7 +32,6 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    // Relación: Un usuario puede haber creado muchas peticiones.
     public function petitions()
     {
         return $this->hasMany(Petition::class);

@@ -18,7 +18,6 @@ export class LoginComponent {
     private router: Router,
     private toastService: ToastService
   ) { }
-  // Intenta loguear. Si sale bien te manda a home, si no muestra error.
   login() {
     this.auth.login({ email: this.email, password: this.password }).subscribe({
       next: () => {

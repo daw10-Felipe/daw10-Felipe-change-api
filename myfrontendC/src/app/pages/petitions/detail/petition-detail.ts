@@ -32,14 +32,12 @@ export class PetitionDetailComponent implements OnInit {
         });
     }
 
-    // Carga la info completa de la petición.
     loadPetition(id: number) {
         this.petitionService.getPetition(id).subscribe(petition => {
             this.petition.set(petition);
         });
     }
 
-    // Borra la petición si confirmas y eres el dueño.
     deletePetition() {
         if (confirm('¿Estás seguro de que quieres eliminar esta petición?')) {
             this.petitionService.deletePetition(this.petition()!.id).subscribe(() => {
@@ -49,7 +47,6 @@ export class PetitionDetailComponent implements OnInit {
         }
     }
 
-    // Comprueba si la petición es tuya para mostrar botones de editar/borrar.
     isOwner(): boolean {
         const user = this.auth.getCurrentUser();
         const p = this.petition();
