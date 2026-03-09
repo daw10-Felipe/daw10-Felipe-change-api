@@ -11,6 +11,16 @@
                 placeholder="Explica el problema y tu solución..."></textarea>
         </div>
 
+        <div class="form-group">
+            <label for="category">Categoría</label>
+            <select id="category" formControlName="category">
+                <option value="">Selecciona una categoría (opcional)</option>
+                @for (cat of categories; track cat) {
+                <option [value]="cat">{{ cat }}</option>
+                }
+            </select>
+        </div>
+
         @if (existingImages().length > 0) {
         <div class="form-group">
             <p>Imágenes actuales (haz clic en ✕ para eliminar al guardar):</p>

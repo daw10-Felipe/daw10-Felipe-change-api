@@ -52,4 +52,23 @@ export class PetitionDetailComponent implements OnInit {
         const p = this.petition();
         return !!(user && p && user.id === p.user_id);
     }
+
+    toggleSign() {
+        const p = this.petition();
+        if (!p) return;
+
+        const action = p.has_signed
+            ? this.petitionService.unsignPetition(p.id)
+            : this.petitionService.signPetition(p.id);
+
+        action.subscribe({
+            next: (res) => {
+                this.petition.set({ ...p, signers_count: res.signers_count, has_signed: res.has_signed });
+                this.toastService.show(res.message, 'success');
+            },
+            error: (err) => {
+                this.toastService.show(err.error?.message || 'Error al firmar', 'error');
+            }
+        });
+    }
 }

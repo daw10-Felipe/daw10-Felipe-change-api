@@ -5,7 +5,27 @@
         <span class="author">Iniciada por <strong>{{ p.user?.name || 'Desconocido' }}</strong></span>
         <span class="date">{{ p.created_at | date:'mediumDate' }}</span>
         <span class="status-pill {{ p.status }}">Estado: {{ p.status | uppercase }}</span>
-        <span class="signers-pill">✍️ {{ p.signers }} personas han firmado</span>
+    </div>
+
+    <!-- Sección de firmas -->
+    <div class="sign-section">
+        <div class="sign-count">
+            <span class="sign-number">{{ p.signers_count || 0 }}</span>
+            <span class="sign-label">personas han firmado</span>
+        </div>
+        @if (auth.isAuthenticated()) {
+        <button class="btn-sign" [class.signed]="p.has_signed" (click)="toggleSign()">
+            @if (p.has_signed) {
+            Ya firmaste · Retirar firma
+            } @else {
+            Firmar esta petición
+            }
+        </button>
+        } @else {
+        <p class="sign-login-hint">
+            <a routerLink="/login">Inicia sesión</a> para firmar esta petición.
+        </p>
+        }
     </div>
 
     <div class="content">

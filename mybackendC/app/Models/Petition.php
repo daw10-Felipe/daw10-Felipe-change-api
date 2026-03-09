@@ -7,7 +7,7 @@ use App\Models\User;
 
 class Petition extends Model
 {
-    protected $fillable = ['title', 'description', 'user_id', 'image', 'status', 'signers'];
+    protected $fillable = ['title', 'description', 'user_id', 'image', 'status', 'signers', 'category'];
 
     public function user()
     {
@@ -17,5 +17,10 @@ class Petition extends Model
     public function images()
     {
         return $this->hasMany(PetitionImage::class);
+    }
+
+    public function signerUsers()
+    {
+        return $this->belongsToMany(User::class, 'petition_signers')->withTimestamps();
     }
 }

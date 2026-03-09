@@ -4,7 +4,7 @@ import { PetitionService } from '../../../services/petition.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from '../../../services/toast.service';
 import { AuthService } from '../../../auth/auth.service';
-import { PetitionImage } from '../../../models/petition.model';
+import { PetitionImage, PETITION_CATEGORIES } from '../../../models/petition.model';
 
 @Component({
     selector: 'app-edit-component',
@@ -20,6 +20,7 @@ export class EditComponent implements OnInit {
     imagesToDelete = signal<number[]>([]);
     selectedFiles = signal<File[]>([]);
     previewUrls = signal<string[]>([]);
+    categories = PETITION_CATEGORIES;
 
     constructor(
         private fb: FormBuilder,
@@ -32,6 +33,7 @@ export class EditComponent implements OnInit {
         this.petitionForm = this.fb.group({
             title: ['', Validators.required],
             description: ['', Validators.required],
+            category: [''],
         });
     }
 
@@ -55,7 +57,8 @@ export class EditComponent implements OnInit {
 
             this.petitionForm.patchValue({
                 title: petition.title,
-                description: petition.description
+                description: petition.description,
+                category: petition.category || ''
             });
 
             this.existingImages.set(petition.images ?? []);
@@ -102,6 +105,10 @@ export class EditComponent implements OnInit {
         const formData = new FormData();
         formData.append('title', this.petitionForm.get('title')?.value);
         formData.append('description', this.petitionForm.get('description')?.value);
+        const category = this.petitionForm.get('category')?.value;
+        if (category) {
+            formData.append('category', category);
+        }
         formData.append('_method', 'PUT');
 
         this.imagesToDelete().forEach(id => {

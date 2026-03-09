@@ -6,12 +6,29 @@ use Illuminate\Http\Request;
 use App\Models\Petition;
 use App\Models\PetitionImage;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class PetitionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Petition::with(['user', 'images'])->get());
+        $petitions = Petition::with(['user', 'images'])
+            ->withCount('signerUsers as signers_count')
+            ->get();
+
+        $user = Auth::guard('api')->user();
+        $signedIds = [];
+        if ($user) {
+            $signedIds = $user->signedPetitions()->pluck('petitions.id')->toArray();
+        }
+
+        $result = $petitions->map(function ($petition) use ($signedIds) {
+            $data = $petition->toArray();
+            $data['has_signed'] = in_array($petition->id, $signedIds);
+            return $data;
+        });
+
+        return response()->json($result);
     }
 
     public function store(Request $request)
@@ -19,11 +36,12 @@ class PetitionController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'category' => 'nullable|string|max:100',
             'images' => 'nullable|array',
             'images.*' => 'image|max:2048',
         ]);
 
-        $data = $request->only('title', 'description');
+        $data = $request->only('title', 'description', 'category');
         $petition = $request->user()->petitions()->create($data);
 
 
@@ -37,10 +55,17 @@ class PetitionController extends Controller
         return response()->json($petition->load('images'), 201);
     }
 
-    public function show(string $id)
+    public function show(Request $request, string $id)
     {
-        $petition = Petition::with(['user', 'images'])->findOrFail($id);
-        return response()->json($petition);
+        $petition = Petition::with(['user', 'images'])
+            ->withCount('signerUsers as signers_count')
+            ->findOrFail($id);
+
+        $user = Auth::guard('api')->user();
+        $data = $petition->toArray();
+        $data['has_signed'] = $user ? $petition->signerUsers()->where('user_id', $user->id)->exists() : false;
+
+        return response()->json($data);
     }
 
     public function update(Request $request, string $id)
@@ -54,13 +79,14 @@ class PetitionController extends Controller
         $request->validate([
             'title' => 'sometimes|string|max:255',
             'description' => 'sometimes|string',
+            'category' => 'nullable|string|max:100',
             'images' => 'nullable|array',
             'images.*' => 'image|max:10240',
             'delete_images' => 'nullable|array',
             'delete_images.*' => 'integer',
         ]);
 
-        $petition->update($request->only('title', 'description'));
+        $petition->update($request->only('title', 'description', 'category'));
 
 
         if ($request->has('delete_images')) {
@@ -101,5 +127,43 @@ class PetitionController extends Controller
         $petition->delete();
 
         return response()->json(['message' => 'Petition deleted']);
+    }
+
+    public function sign(Request $request, string $id)
+    {
+        $petition = Petition::findOrFail($id);
+        $user = $request->user();
+
+        if ($petition->signerUsers()->where('user_id', $user->id)->exists()) {
+            return response()->json(['message' => 'Ya has firmado esta petición'], 409);
+        }
+
+        $petition->signerUsers()->attach($user->id);
+        $petition->loadCount('signerUsers as signers_count');
+        
+        return response()->json([
+            'message' => 'Petición firmada con éxito',
+            'signers_count' => $petition->signers_count,
+            'has_signed' => true,
+        ]);
+    }
+
+    public function unsign(Request $request, string $id)
+    {
+        $petition = Petition::findOrFail($id);
+        $user = $request->user();
+
+        if (!$petition->signerUsers()->where('user_id', $user->id)->exists()) {
+            return response()->json(['message' => 'No has firmado esta petición'], 409);
+        }
+
+        $petition->signerUsers()->detach($user->id);
+        $petition->loadCount('signerUsers as signers_count');
+
+        return response()->json([
+            'message' => 'Firma retirada con éxito',
+            'signers_count' => $petition->signers_count,
+            'has_signed' => false,
+        ]);
     }
 }

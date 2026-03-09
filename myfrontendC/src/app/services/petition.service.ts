@@ -34,4 +34,12 @@ export class PetitionService {
     deletePetition(id: number | string): Observable<void> {
         return this.http.delete<void>(`${this.apiUrl}/${id}`);
     }
+
+    signPetition(id: number | string): Observable<{ message: string; signers_count: number; has_signed: boolean }> {
+        return this.http.post<{ message: string; signers_count: number; has_signed: boolean }>(`${this.apiUrl}/${id}/sign`, {});
+    }
+
+    unsignPetition(id: number | string): Observable<{ message: string; signers_count: number; has_signed: boolean }> {
+        return this.http.delete<{ message: string; signers_count: number; has_signed: boolean }>(`${this.apiUrl}/${id}/sign`);
+    }
 }

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { PetitionService } from '../../../services/petition.service';
 import { Router } from '@angular/router';
 import { ToastService } from '../../../services/toast.service';
+import { PETITION_CATEGORIES } from '../../../models/petition.model';
 
 @Component({
     selector: 'app-create-component',
@@ -15,6 +16,7 @@ export class CreateComponent {
     petitionForm: FormGroup;
     selectedFiles = signal<File[]>([]);
     previewUrls = signal<string[]>([]);
+    categories = PETITION_CATEGORIES;
 
     constructor(
         private fb: FormBuilder,
@@ -25,6 +27,7 @@ export class CreateComponent {
         this.petitionForm = this.fb.group({
             title: ['', Validators.required],
             description: ['', Validators.required],
+            category: [''],
         });
     }
 
@@ -58,6 +61,10 @@ export class CreateComponent {
         const formData = new FormData();
         formData.append('title', this.petitionForm.get('title')?.value);
         formData.append('description', this.petitionForm.get('description')?.value);
+        const category = this.petitionForm.get('category')?.value;
+        if (category) {
+            formData.append('category', category);
+        }
 
         this.selectedFiles().forEach(file => {
             formData.append('images[]', file);
