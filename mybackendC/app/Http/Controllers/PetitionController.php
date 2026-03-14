@@ -7,7 +7,7 @@ use App\Models\Petition;
 use App\Models\PetitionImage;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class PetitionController extends Controller
 {
