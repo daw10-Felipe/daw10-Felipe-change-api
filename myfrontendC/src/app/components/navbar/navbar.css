@@ -1,4 +1,4 @@
-/* Navbar Styles */
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -81,7 +81,7 @@
   background: #d42319;
 }
 
-/* Dropdown Styles */
+
 .dropdown {
   position: relative;
   display: inline-block;

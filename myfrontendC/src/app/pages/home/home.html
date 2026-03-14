@@ -13,7 +13,7 @@
         </div>
     </header>
 
-    <!-- Filtros -->
+    
     <div class="filters-bar">
         <div class="filter-group">
             <label>Categoría</label>
@@ -42,7 +42,7 @@
     <section class="petitions-list">
         @for (petition of filteredPetitions(); track petition.id) {
         <a class="petition-card" [routerLink]="['/petitions', petition.id]">
-            <!-- Carrusel de imágenes -->
+            
             @if (petition.images && petition.images.length > 0) {
             <div class="card-carousel">
                 <div class="carousel-track"

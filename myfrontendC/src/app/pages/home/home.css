@@ -1,11 +1,11 @@
-/* === Container === */
+
 .home-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
 }
 
-/* === Hero === */
+
 .hero {
     text-align: center;
     margin-bottom: 3rem;
@@ -58,14 +58,14 @@
     background: #fff;
 }
 
-/* === Petitions Grid === */
+
 .petitions-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 2rem;
 }
 
-/* === Filters Bar === */
+
 .filters-bar {
     display: flex;
     align-items: flex-end;
@@ -138,7 +138,7 @@
     font-weight: 600;
 }
 
-/* === Card === */
+
 .petition-card {
     border: none;
     border-radius: 16px;
@@ -158,7 +158,7 @@
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
 }
 
-/* === Carousel === */
+
 .card-carousel {
     position: relative;
     width: 100%;
@@ -250,7 +250,7 @@
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* === Placeholder sin imagen === */
+
 .card-placeholder {
     width: 100%;
     height: 220px;
@@ -260,7 +260,7 @@
     justify-content: center;
 }
 
-/* === Card Body === */
+
 .card-body {
     padding: 1.2rem 1.5rem 1.5rem;
     display: flex;
@@ -328,7 +328,7 @@
     flex-grow: 1;
 }
 
-/* === Card Footer === */
+
 .card-footer {
     display: flex;
     align-items: center;
@@ -377,7 +377,7 @@
     align-items: center;
 }
 
-/* === No Results === */
+
 .no-results {
     text-align: center;
     grid-column: 1 / -1;
@@ -393,7 +393,7 @@
     color: #999;
 }
 
-/* === Responsive === */
+
 @media (max-width: 768px) {
     .hero h1 {
         font-size: 2rem;
