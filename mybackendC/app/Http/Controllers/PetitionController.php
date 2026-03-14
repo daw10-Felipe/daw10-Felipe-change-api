@@ -7,6 +7,7 @@ use App\Models\Petition;
 use App\Models\PetitionImage;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class PetitionController extends Controller
 {
@@ -16,7 +17,12 @@ class PetitionController extends Controller
             ->withCount('signerUsers as signers_count')
             ->get();
 
-        $user = Auth::guard('api')->user();
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+        } catch (\Exception $e) {
+            $user = null;
+        }
+
         $signedIds = [];
         if ($user) {
             $signedIds = $user->signedPetitions()->pluck('petitions.id')->toArray();
@@ -61,7 +67,12 @@ class PetitionController extends Controller
             ->withCount('signerUsers as signers_count')
             ->findOrFail($id);
 
-        $user = Auth::guard('api')->user();
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+        } catch (\Exception $e) {
+            $user = null;
+        }
+
         $data = $petition->toArray();
         $data['has_signed'] = $user ? $petition->signerUsers()->where('user_id', $user->id)->exists() : false;
 
@@ -140,7 +151,7 @@ class PetitionController extends Controller
 
         $petition->signerUsers()->attach($user->id);
         $petition->loadCount('signerUsers as signers_count');
-        
+
         return response()->json([
             'message' => 'Petición firmada con éxito',
             'signers_count' => $petition->signers_count,
