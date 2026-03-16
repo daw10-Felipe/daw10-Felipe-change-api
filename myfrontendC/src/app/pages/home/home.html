@@ -17,7 +17,7 @@
     <div class="filters-bar">
         <div class="filter-group">
             <label>Categoría</label>
-            <select [ngModel]="categoryFilter()" (ngModelChange)="categoryFilter.set($event)">
+            <select [ngModel]="categoryFilter()" (ngModelChange)="categoryFilter.set($event); onFilterChange()">
                 <option value="">Todas las categorías</option>
                 @for (cat of categories; track cat) {
                 <option [value]="cat">{{ cat }}</option>
@@ -29,18 +29,18 @@
             <label>Firmas</label>
             <div class="filter-chips">
                 <button class="chip" [class.active]="signedFilter() === 'all'"
-                    (click)="signedFilter.set('all')">Todas</button>
+                    (click)="signedFilter.set('all'); onFilterChange()">Todas</button>
                 <button class="chip" [class.active]="signedFilter() === 'signed'"
-                    (click)="signedFilter.set('signed')">Firmadas</button>
+                    (click)="signedFilter.set('signed'); onFilterChange()">Firmadas</button>
                 <button class="chip" [class.active]="signedFilter() === 'unsigned'"
-                    (click)="signedFilter.set('unsigned')">Sin firmar</button>
+                    (click)="signedFilter.set('unsigned'); onFilterChange()">Sin firmar</button>
             </div>
         </div>
         }
     </div>
 
     <section class="petitions-list">
-        @for (petition of filteredPetitions(); track petition.id) {
+        @for (petition of paginatedPetitions(); track petition.id) {
         <a class="petition-card" [routerLink]="['/petitions', petition.id]">
             
             @if (petition.images && petition.images.length > 0) {
@@ -121,4 +121,17 @@
         </div>
         }
     </section>
+
+    @if (totalPages() > 1) {
+    <div class="pagination-controls">
+        <button class="pagination-btn" [disabled]="currentPage() === 1" (click)="changePage(currentPage() - 1)">
+            Anterior
+        </button>
+        <span class="pagination-info">Página {{ currentPage() }} de {{ totalPages() }}</span>
+        <button class="pagination-btn" [disabled]="currentPage() === totalPages()"
+            (click)="changePage(currentPage() + 1)">
+            Siguiente
+        </button>
+    </div>
+    }
 </div>

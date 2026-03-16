@@ -20,6 +20,9 @@ export class HomeComponent implements OnInit {
     categoryFilter = signal<string>('');
     categories = PETITION_CATEGORIES;
 
+    currentPage = signal(1);
+    pageSize = signal(6);
+
     filteredPetitions = computed(() => {
         const term = this.searchTerm().toLowerCase();
         const signed = this.signedFilter();
@@ -39,6 +42,14 @@ export class HomeComponent implements OnInit {
         });
     });
 
+    totalPages = computed(() => Math.max(1, Math.ceil(this.filteredPetitions().length / this.pageSize())));
+
+    paginatedPetitions = computed(() => {
+        const start = (this.currentPage() - 1) * this.pageSize();
+        const end = start + this.pageSize();
+        return this.filteredPetitions().slice(start, end);
+    });
+
     constructor(
         private petitionService: PetitionService,
         private route: ActivatedRoute,
@@ -54,8 +65,20 @@ export class HomeComponent implements OnInit {
                     filtered = petitions.filter(p => p.user_id === userId);
                 }
                 this.petitions.set(filtered.map(p => ({ ...p, _carouselIndex: 0 })));
+                this.currentPage.set(1);
             });
         });
+    }
+
+    onFilterChange() {
+        this.currentPage.set(1);
+    }
+
+    changePage(page: number) {
+        if (page >= 1 && page <= this.totalPages()) {
+            this.currentPage.set(page);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     }
 
     prevImage(petition: Petition & { _carouselIndex?: number }, event: Event) {
