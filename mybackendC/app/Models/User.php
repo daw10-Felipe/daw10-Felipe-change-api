@@ -11,7 +11,13 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'rol_id',
     ];
+
+    public function isAdmin(): bool
+    {
+        return $this->rol_id === 1;
+    }
     protected $hidden = [
         'password',
         'remember_token',

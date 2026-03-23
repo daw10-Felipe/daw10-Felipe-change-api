@@ -1,0 +1,81 @@
+<div class="admin-page">
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Usuarios</h1>
+            <p class="page-subtitle">Gestión de usuarios del sistema</p>
+        </div>
+    </div>
+
+    @if (loading()) {
+        <div class="loading-spinner">Cargando usuarios...</div>
+    } @else if (users().length === 0) {
+        <div class="empty-state"><p>No hay usuarios registrados</p></div>
+    } @else {
+        <div class="table-wrapper">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th>Peticiones</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (user of users(); track user.id) {
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td><strong>{{ user.name }}</strong></td>
+                            <td>{{ user.email }}</td>
+                            <td>
+                                <span class="role-badge" [class.admin]="user.rol_id === 1" [class.user]="user.rol_id === 0">
+                                    {{ user.rol_id === 1 ? 'Admin' : 'Usuario' }}
+                                </span>
+                            </td>
+                            <td>{{ user.petitions_count || 0 }}</td>
+                            <td>
+                                <div class="actions-cell">
+                                    <button class="btn-icon btn-edit" (click)="openEdit(user)" title="Editar">✏️</button>
+                                    <button class="btn-icon btn-delete" (click)="deleteUser(user)" title="Eliminar">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    @if (showModal()) {
+        <div class="modal-overlay" (click)="closeModal()">
+            <div class="modal" (click)="$event.stopPropagation()">
+                <h2>Editar Usuario</h2>
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input [(ngModel)]="form.name" placeholder="Nombre" />
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input [(ngModel)]="form.email" type="email" placeholder="Email" />
+                </div>
+                <div class="form-group">
+                    <label>Nueva Contraseña (dejar vacío para no cambiar)</label>
+                    <input [(ngModel)]="form.password" type="password" placeholder="••••••" />
+                </div>
+                <div class="form-group">
+                    <label>Rol</label>
+                    <select [(ngModel)]="form.rol_id">
+                        <option [ngValue]="0">Usuario</option>
+                        <option [ngValue]="1">Administrador</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
+                    <button class="btn-save" (click)="saveUser()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>

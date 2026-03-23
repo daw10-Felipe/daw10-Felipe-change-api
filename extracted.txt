@@ -1,0 +1,46 @@
+--- Markdown Cell 0 ---
+
+# Pruebas A/B con IA para metadescripciones (SEO)
+Genera dos variantes A/B con un modelo de lenguaje (GPT‑2) y simula CTR para comparar cuál podría rendir mejor.
+
+--- Markdown Cell 1 ---
+## 1) Instalación de librerías y comprobación del entorno
+Instala `transformers` y `torch`. Luego imprime versión y si hay GPU disponible (opcional).
+--- Code Cell 2 ---
+--- Markdown Cell 3 ---
+## 2) Cargar un generador de texto con Hugging Face
+Usaremos `pipeline("text-generation", model="gpt2")`, que es público y no requiere token. Servirá para proponer metadescripciones alternativas.
+--- Code Cell 4 ---
+# GPT-2 público, rápido para prototipar
+--- Markdown Cell 5 ---
+## 3) Funciones de apoyo
+- `generate_meta(prompt, max_length)`: genera una metadescripción corta.
+- `simulate_ctr(base_rate, variation)`: devuelve un CTR simulado para la variante (ruido controlado).
+--- Code Cell 6 ---
+# Pequeño post-procesado: quedarse con una sola línea y recortar a ~160 chars
+--- Markdown Cell 7 ---
+## 4) Crear dos variantes de metadescripción (A y B)
+Define un `prompt_base` y genera Variant A / Variant B con ligeras instrucciones.
+--- Code Cell 8 ---
+--- Markdown Cell 9 ---
+## 5) Simular visitas y clics para estimar CTR
+- Define `n_visits` (p.ej., 1000).
+- Para cada visita, se genera un clic si un aleatorio < CTR simulado.
+- Calcula CTR_A y CTR_B y muestra resultados.
+> Nota: Esto es **simulación** para practicar; en producción usarías datos reales (Search Console, experimentos controlados).
+--- Code Cell 10 ---
+# Simula CTR instantáneo para cada impresión y cuenta clics
+--- Markdown Cell 11 ---
+## 6) Tabla resumen de resultados
+Visualiza variantes, CTRs y clics en una tabla.
+--- Code Cell 12 ---
+--- Markdown Cell 13 ---
+## 7) Guardar resultados en CSV
+Crea `ab_test_metadescripciones.csv` con prompts, metadescripciones y métricas simuladas.
+--- Code Cell 14 ---
+# Añadimos el prompt base para trazabilidad
+--- Markdown Cell 15 ---
+## 8) (Opcional) Descargar el CSV desde Colab
+Usa `files.download` para bajarlo a tu equipo (si estás en Colab).
+
+--- Code Cell 16 ---

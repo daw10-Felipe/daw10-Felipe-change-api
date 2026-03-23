@@ -1,0 +1,35 @@
+<div class="admin-wrapper">
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <a routerLink="/" class="sidebar-logo">Change</a>
+            <span class="sidebar-badge">Admin</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="sidebar-link">
+                <span class="link-icon">📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a routerLink="/admin/users" routerLinkActive="active" class="sidebar-link">
+                <span class="link-icon">👥</span>
+                <span>Usuarios</span>
+            </a>
+            <a routerLink="/admin/petitions" routerLinkActive="active" class="sidebar-link">
+                <span class="link-icon">📝</span>
+                <span>Peticiones</span>
+            </a>
+            <a routerLink="/admin/categories" routerLinkActive="active" class="sidebar-link">
+                <span class="link-icon">🏷️</span>
+                <span>Categorías</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a routerLink="/" class="sidebar-link back-link">
+                <span class="link-icon">← </span>
+                <span>Volver al sitio</span>
+            </a>
+        </div>
+    </aside>
+    <main class="admin-content">
+        <router-outlet></router-outlet>
+    </main>
+</div>

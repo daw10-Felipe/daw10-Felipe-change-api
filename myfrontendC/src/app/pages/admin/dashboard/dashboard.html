@@ -1,0 +1,39 @@
+<div class="admin-page">
+    <h1 class="page-title">Dashboard</h1>
+    <p class="page-subtitle">Resumen general del sitio</p>
+
+    @if (loading()) {
+        <div class="loading-spinner">Cargando...</div>
+    } @else {
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon users-icon">👥</div>
+                <div class="stat-info">
+                    <span class="stat-value">{{ stats().total_users }}</span>
+                    <span class="stat-label">Usuarios</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon petitions-icon">📝</div>
+                <div class="stat-info">
+                    <span class="stat-value">{{ stats().total_petitions }}</span>
+                    <span class="stat-label">Peticiones</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon active-icon">✅</div>
+                <div class="stat-info">
+                    <span class="stat-value">{{ stats().active_petitions }}</span>
+                    <span class="stat-label">Peticiones Activas</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon categories-icon">🏷️</div>
+                <div class="stat-info">
+                    <span class="stat-value">{{ stats().total_categories }}</span>
+                    <span class="stat-label">Categorías</span>
+                </div>
+            </div>
+        </div>
+    }
+</div>
