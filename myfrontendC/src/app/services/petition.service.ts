@@ -42,4 +42,8 @@ export class PetitionService {
     unsignPetition(id: number | string): Observable<{ message: string; signers_count: number; has_signed: boolean }> {
         return this.http.delete<{ message: string; signers_count: number; has_signed: boolean }>(`${this.apiUrl}/${id}/sign`);
     }
+
+    getCategories(): Observable<any[]> {
+        return this.http.get<any[]>('http://localhost:8000/api/categories');
+    }
 }

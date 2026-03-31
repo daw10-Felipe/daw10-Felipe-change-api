@@ -19,7 +19,7 @@
             <label>Categoría</label>
             <select [ngModel]="categoryFilter()" (ngModelChange)="categoryFilter.set($event); onFilterChange()">
                 <option value="">Todas las categorías</option>
-                @for (cat of categories; track cat) {
+                @for (cat of categories(); track cat) {
                 <option [value]="cat">{{ cat }}</option>
                 }
             </select>

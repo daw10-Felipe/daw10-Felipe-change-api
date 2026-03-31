@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
     searchTerm = signal('');
     signedFilter = signal<'all' | 'signed' | 'unsigned'>('all');
     categoryFilter = signal<string>('');
-    categories = PETITION_CATEGORIES;
+    categories = signal<string[]>([]);
 
     currentPage = signal(1);
     pageSize = signal(6);
@@ -57,6 +57,10 @@ export class HomeComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        this.petitionService.getCategories().subscribe(cats => {
+            this.categories.set(cats.map(c => c.name));
+        });
+
         this.route.queryParams.subscribe(params => {
             this.petitionService.getPetitions().subscribe(petitions => {
                 let filtered = petitions;

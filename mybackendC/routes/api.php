@@ -26,6 +26,7 @@ Route::middleware('auth:api')->group(function () {
 Route::middleware('api')->group(function () {
     Route::get('petitions', [PetitionController::class, 'index']);
     Route::get('petitions/{id}', [PetitionController::class, 'show']);
+    Route::get('categories', [PetitionController::class, 'indexCategories']);
 });
 
 

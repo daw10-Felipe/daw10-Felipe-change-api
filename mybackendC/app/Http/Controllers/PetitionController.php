@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Petition;
 use App\Models\PetitionImage;
+use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
@@ -176,5 +177,10 @@ class PetitionController extends Controller
             'signers_count' => $petition->signers_count,
             'has_signed' => false,
         ]);
+    }
+
+    public function indexCategories()
+    {
+        return response()->json(Category::all());
     }
 }
