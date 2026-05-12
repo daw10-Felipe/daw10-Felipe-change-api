@@ -15,6 +15,10 @@ export class PetitionService {
         return this.http.get<Petition[]>(this.apiUrl);
     }
 
+    getSignedPetitions(): Observable<Petition[]> {
+        return this.http.get<Petition[]>(`${this.apiUrl}/signed`);
+    }
+
     getPetition(id: number | string): Observable<Petition> {
         return this.http.get<Petition>(`${this.apiUrl}/${id}`);
     }

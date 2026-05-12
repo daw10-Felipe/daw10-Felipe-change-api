@@ -2,7 +2,7 @@ import { Component, OnInit, signal, computed } from '@angular/core';
 import { PetitionService } from '../../services/petition.service';
 import { Petition, PETITION_CATEGORIES } from '../../models/petition.model';
 import { FormsModule } from '@angular/forms';
-import { RouterLink, ActivatedRoute } from '@angular/router';
+import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 import { CommonModule } from '@angular/common';
 
@@ -53,6 +53,7 @@ export class HomeComponent implements OnInit {
     constructor(
         private petitionService: PetitionService,
         private route: ActivatedRoute,
+        private router: Router,
         public auth: AuthService
     ) { }
 
@@ -62,6 +63,11 @@ export class HomeComponent implements OnInit {
         });
 
         this.route.queryParams.subscribe(params => {
+            if (params['user'] && !this.auth.isAuthenticated()) {
+                this.router.navigate(['/login']);
+                return;
+            }
+
             this.petitionService.getPetitions().subscribe(petitions => {
                 let filtered = petitions;
                 if (params['user']) {

@@ -13,6 +13,7 @@ import { AdminDashboardComponent } from './pages/admin/dashboard/dashboard';
 import { AdminUsersComponent } from './pages/admin/users/users';
 import { AdminPetitionsComponent } from './pages/admin/petitions/petitions';
 import { AdminCategoriesComponent } from './pages/admin/categories/categories';
+import { MisFirmasComponent } from './pages/mis-firmas/mis-firmas';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -22,6 +23,11 @@ export const routes: Routes = [
     path: 'profile',
     component: ProfileComponent,
     canActivate: [authGuard],
+  },
+  {
+    path: 'mis-firmas',
+    component: MisFirmasComponent,
+    canActivate: [authGuard]
   },
 
   { path: 'petitions', component: HomeComponent },

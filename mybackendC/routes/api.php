@@ -14,6 +14,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('me', [AuthController::class, 'me']);
 
 
+    Route::get('petitions/signed', [PetitionController::class, 'signedPetitions']);
     Route::post('petitions', [PetitionController::class, 'store']);
     Route::put('petitions/{id}', [PetitionController::class, 'update']);
     Route::delete('petitions/{id}', [PetitionController::class, 'destroy']);

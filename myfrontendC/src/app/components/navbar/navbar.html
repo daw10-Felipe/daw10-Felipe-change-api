@@ -12,6 +12,7 @@
             <button class="dropbtn">Hola, {{ user.name }} ▼</button>
             <div class="dropdown-content">
                 <a routerLink="/petitions" [queryParams]="{user: user.id}">Mis peticiones</a>
+                <a routerLink="/mis-firmas">Mis firmas</a>
                 @if (user.rol_id === 1) {
                 <a routerLink="/admin" class="admin-link">
                     <span class="admin-icon">⚙️</span> Panel Admin

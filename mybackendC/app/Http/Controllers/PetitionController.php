@@ -38,6 +38,23 @@ class PetitionController extends Controller
         return response()->json($result);
     }
 
+    public function signedPetitions(Request $request)
+    {
+        $user = $request->user();
+        $petitions = $user->signedPetitions()
+            ->with(['user', 'images'])
+            ->withCount('signerUsers as signers_count')
+            ->get();
+
+        $result = $petitions->map(function ($petition) {
+            $data = $petition->toArray();
+            $data['has_signed'] = true;
+            return $data;
+        });
+
+        return response()->json($result);
+    }
+
     public function store(Request $request)
     {
         $request->validate([

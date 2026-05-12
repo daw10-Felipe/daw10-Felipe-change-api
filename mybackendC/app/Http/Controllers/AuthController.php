@@ -17,7 +17,7 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        if (!$token = Auth::attempt($credentials)) {
+        if (!$token = Auth::guard('api')->attempt($credentials)) {
             return response()->json([
                 'message' => 'Credenciales incorrectas'
             ], 401);
@@ -46,7 +46,7 @@ class AuthController extends Controller
             'password' => $request->password,
         ]);
 
-        $token = Auth::login($user);
+        $token = Auth::guard('api')->login($user);
 
         return $this->respondWithToken($token);
     }
@@ -54,13 +54,13 @@ class AuthController extends Controller
 
     public function me()
     {
-        return response()->json(Auth::user());
+        return response()->json(Auth::guard('api')->user());
     }
 
 
     public function logout()
     {
-        Auth::logout();
+        Auth::guard('api')->logout();
 
         return response()->json([
             'message' => 'Sesion cerrada correctamente'
@@ -70,7 +70,7 @@ class AuthController extends Controller
 
     public function refresh()
     {
-        return $this->respondWithToken(Auth::refresh());
+        return $this->respondWithToken(Auth::guard('api')->refresh());
     }
 
 
@@ -79,7 +79,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => Auth::factory()->getTTL() * 60
+            'expires_in' => Auth::guard('api')->factory()->getTTL() * 60
         ]);
     }
 }

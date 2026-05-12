@@ -103,7 +103,7 @@
     min-height: 100vh;
 }
 
-/* ─── Responsive ─── */
+
 @media (max-width: 768px) {
     .admin-sidebar {
         width: 70px;
